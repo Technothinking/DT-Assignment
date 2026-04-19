@@ -2,200 +2,122 @@
 
 ## Overview
 
-This project implements a **deterministic end-of-day reflection tool** that guides an employee through a structured conversation across three psychological axes:
+This project implements a **deterministic end-of-day reflection tool** that guides users through a structured conversation across three psychological axes:
 
-* **Locus (Victim ↔ Victor)** — How you handled situations
-* **Orientation (Entitlement ↔ Contribution)** — How you showed up for others
-* **Radius (Self ↔ Others)** — How you perceived impact
+* **Locus (Victim ↔ Victor)** — Agency and control
+* **Orientation (Entitlement ↔ Contribution)** — Behavior toward others
+* **Radius (Self ↔ Others)** — Perspective and impact
 
-Unlike typical AI-based tools, this system does **not use any LLM at runtime**.
-All intelligence is encoded into a **decision tree**, ensuring:
+Unlike AI-based tools, this system uses **no LLM at runtime**. All logic is encoded in a decision tree, ensuring predictable, auditable, and consistent reflections.
 
-* Predictable behavior
-* Auditable logic
-* Consistent reflections
-
-The same inputs will always produce the same outputs.
+The project includes both CLI and web interfaces.
 
 ---
 
 ## Key Idea
 
-The system is built as a **deterministic tree-walking agent**:
+A **deterministic tree-walking agent** where:
+* Each node = question, reflection, or transition
+* Fixed options (no free text)
+* Predefined paths based on selections
+* Signals track behavioral tendencies
 
-* Each node represents a question, reflection, or transition
-* Each question has **fixed options** (no free text)
-* Each option leads to a **predefined next node**
-* Signals are accumulated to track behavioral tendencies
-
-The result is a guided reflection that feels conversational while remaining fully deterministic.
+Result: Conversational feel with full determinism.
 
 ---
 
 ## Project Structure
 
 ```
-/tree/
-  reflection-tree.json        # Core decision tree (the product)
+/README.md                     # This file
+/write-up.md                   # Design rationale
+/tree/reflection-tree.json     # Core decision tree
 /agent/
-  main.py                     # CLI engine to run the tree
-/transcripts/
-  persona-1.md                # External / Entitled / Self-focused
-  persona-2.md                # Internal / Contributing / Others-focused
-write-up.md                   # Design rationale (Part A)
-README.md                     # This file
+  engine.py                   # Core logic
+  main.py                     # CLI interface
+/api/app.py                   # FastAPI backend
+/frontend/                    # React web app
+/transcripts/                 # Sample conversations
 ```
 
 ---
 
 ## How to Run
 
-### 1. Clone the repository
+### Web App (Recommended)
+```bash
+# Backend
+cd api && uvicorn app:app --reload --host 127.0.0.1 --port 8000
 
+# Frontend (new terminal)
+cd frontend && npm install && npm start
 ```
-git clone <repo-link>
-cd <repo-name>
-```
+Open `http://localhost:3000`
 
-### 2. Navigate to agent
-
-```
-cd agent
-```
-
-### 3. Run the program
-
-```
-python main.py
+### CLI
+```bash
+cd agent && python main.py
 ```
 
 ---
 
 ## How It Works
 
-### 1. Tree Loading
+### Tree Loading
+Loads decision tree defining nodes, options, transitions, and signals.
 
-The engine loads the reflection tree from:
+### State Management
+* `answers`: User selections
+* `axis1`: Internal vs external
+* `axis2`: Contribution vs entitlement
+* `axis3`: Self vs others
 
-```
-/tree/reflection-tree.json
-```
+### Flow
+Questions → Signals → Decisions → Reflections → Summary
 
-The tree defines:
-
-* Node types (question, decision, reflection, etc.)
-* Options and transitions
-* Signals for axis tracking
-
----
-
-### 2. State Management
-
-The system maintains:
-
-* `answers` → user selections (for interpolation)
-* `axis1` → internal vs external
-* `axis2` → contribution vs entitlement
-* `axis3` → self vs others
-
----
-
-### 3. Deterministic Flow
-
-* Questions → user selects option
-* Signals → update axis scores
-* Decisions → route based on conditions
-* Reflections → shown based on path
-
-No randomness. No AI calls. Fully traceable.
+Fully deterministic and traceable.
 
 ---
 
 ## Axes Design
 
-### Axis 1: Locus (Victim ↔ Victor)
+### Axis 1: Locus
+Surfaces agency through reaction-based questions.
+Signals: Internal (control) vs External (circumstances)
 
-Focus: **Agency**
+### Axis 2: Orientation
+Reveals focus on giving vs receiving.
+Signals: Contribution vs Entitlement
 
-* Identifies whether the user sees events as happening *to them* or *through them*
-* Uses reaction-based questions to surface control
-
----
-
-### Axis 2: Orientation (Entitlement ↔ Contribution)
-
-Focus: **Behavior toward others**
-
-* Surfaces whether the user focuses on receiving or giving
-* Uses subtle framing to reveal entitlement without judgment
-
----
-
-### Axis 3: Radius (Self ↔ Others)
-
-Focus: **Perspective**
-
-* Expands awareness from self → team → impact
-* Uses perspective-taking to introduce meaning
+### Axis 3: Radius
+Expands from self → others → impact.
+Signals: Self vs Others
 
 ---
 
 ## Example Flow
 
-```
-Start → Axis 1 → Axis 2 → Axis 3 → Summary → End
-```
-
-Each axis builds on the previous one:
-
-* Agency → Contribution → Impact
+Start → Axis 1 → Bridge → Axis 2 → Bridge → Axis 3 → Summary → End
 
 ---
 
 ## Transcripts
 
-Two sample runs are included:
-
-1. **Persona A**
-
-   * External locus
-   * Entitlement-oriented
-   * Self-focused
-
-2. **Persona B**
-
-   * Internal locus
-   * Contribution-oriented
-   * Others-focused
-
-These demonstrate how different inputs produce different deterministic paths.
+Two sample runs demonstrate different paths:
+- **Persona 1**: External/Entitled/Self-focused
+- **Persona 2**: Internal/Contributing/Others-focused
 
 ---
 
 ## Design Principles
 
-* **Determinism over generation**
-  No LLM usage at runtime
-
-* **Structured thinking**
-  Psychological concepts encoded as trees
-
-* **Guided reflection**
-  Questions lead to insight, not evaluation
-
-* **No moralizing**
-  Reflections reframe without judging
+* **Determinism over generation** (no LLM)
+* **Structured thinking** (trees encode psychology)
+* **Guided reflection** (insight, not evaluation)
+* **No moralizing** (reframe without judgment)
 
 ---
 
 ## Summary
 
-This project demonstrates how **human reflection can be encoded into structured systems**.
-
-Instead of generating answers dynamically, the system:
-
-* Guides thinking through design
-* Surfaces patterns through structure
-* Delivers consistent insight through determinism
-
----
+Demonstrates encoding human reflection into structured systems. Guides thinking through design, surfaces patterns through structure, delivers consistent insight via determinism. Web interface makes it accessible while maintaining core philosophy.

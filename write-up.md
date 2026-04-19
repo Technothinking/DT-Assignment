@@ -127,17 +127,3 @@ Instead of reporting scores, it:
 
 This ensures the session ends with **insight, not evaluation**.
 
----
-
-
-## 7. Key Takeaway
-
-This project demonstrates how **psychological insight can be encoded into deterministic systems**.
-
-Instead of relying on AI to generate responses, the intelligence is embedded in:
-
-* The structure of the tree
-* The design of the questions
-* The sequencing of reflections
-
-The result is a system that consistently guides users toward greater awareness — not by telling them what to think, but by helping them see it for themselves.

@@ -91,15 +91,7 @@ Work rarely exists in isolation. What you do shapes others — teammates, outcom
 
 **Summary:**
 
-You approached the day with a sense of control — shaping how you responded to what happened.
-
-In your interactions, you leaned toward contributing and moving things forward.
-
-Your perspective centered more on how your actions affected others.
-
-Taken together, this influences not just what you did today — but how meaningful it felt.
-
-Tomorrow, even a small shift in one of these can change the entire experience.
+You approached the day with a sense of control. You leaned toward contributing and moving things forward. Your perspective centered more on how your actions affected others. A small shift tomorrow can change the entire experience.
 
 ---
 
