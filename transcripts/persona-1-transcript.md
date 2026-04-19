@@ -91,17 +91,9 @@ Work rarely exists in isolation. What you do shapes others — teammates, outcom
 
 **Summary:**
 
-You approached the day with a pull from external circumstances — shaping how you responded to what happened.
-
-In your interactions, you leaned toward noticing gaps in what others were doing.
-
-Your perspective centered more on your own experience.
-
-Taken together, this influences not just what you did today — but how the day felt.
-
-Tomorrow, even a small shift in one of these can change the entire experience.
+You approached the day with a pull from external circumstances. You leaned toward noticing gaps in what others were doing. Your perspective centered more on your own experience. A small shift tomorrow can change the entire experience.
 
 ---
 
-**End:**  
+**End:**
 That’s it for today. See you tomorrow.

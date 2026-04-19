@@ -188,21 +188,6 @@ These demonstrate how different inputs produce different deterministic paths.
 
 ---
 
-## Limitations & Future Work
-
-* Deeper branching for edge cases
-* UI-based interaction (web/mobile)
-* Long-term tracking of reflections
-* More nuanced cross-axis reflections
-
----
-
-## Author
-
-Nitish
-
----
-
 ## Summary
 
 This project demonstrates how **human reflection can be encoded into structured systems**.

@@ -129,25 +129,8 @@ This ensures the session ends with **insight, not evaluation**.
 
 ---
 
-## 7. What I Would Improve
 
-With more time, I would:
-
-1. **Increase Tree Depth**
-   Add more nuanced branches for edge cases (e.g., mixed signals across axes).
-
-2. **Personalized Reflection Paths**
-   Introduce more conditional reflections combining multiple axes (e.g., external + entitlement patterns).
-
-3. **UI Layer**
-   Build a lightweight web interface to improve usability and engagement.
-
-4. **Longitudinal Tracking**
-   Track daily reflections over time to show patterns and growth trends.
-
----
-
-## 8. Key Takeaway
+## 7. Key Takeaway
 
 This project demonstrates how **psychological insight can be encoded into deterministic systems**.
 

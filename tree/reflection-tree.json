@@ -291,7 +291,7 @@
     {
       "id": "SUMMARY",
       "type": "summary",
-      "text": "Today, you leaned {axis1.dominant} in how you handled situations, {axis2.dominant} in how you showed up, and your perspective was more {axis3.dominant}.",
+      "text": "You approached the day with {axis1.text}.\n\nYou leaned toward {axis2.text}.\n\nYour perspective centered more on {axis3.text}.\n\nA small shift tomorrow can change the entire experience.",
       "next": "END"
     },
     {
