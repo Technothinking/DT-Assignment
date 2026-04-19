@@ -1,38 +1,22 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import ChatWindow from "./components/ChatWindow";
 import "./App.css";
 
 function App() {
-  const [sessionId, setSessionId] = useState(null);
   const [messages, setMessages] = useState([]);
   const hasStarted = useRef(false);
   const sessionIdRef = useRef(null);
+  const handleResponseRef = useRef(null);
 
-  const addMessage = (sender, text, options = null) => {
+  const addMessage = useCallback((sender, text, options = null) => {
     setMessages((prev) => [
       ...prev,
       { sender, text, options }
     ]);
-  };
+  }, []);
 
-  const handleResponse = (res) => {
-    if (!res) return;
-
-    if (res.type === "message") {
-      addMessage("agent", res.text);
-      sendStep();
-    } else if (res.type === "question") {
-      addMessage("agent", res.text, res.options);
-    } else if (res.type === "summary") {
-      addMessage("agent", res.text);
-      sendStep();
-    } else if (res.type === "end") {
-      addMessage("agent", res.text);
-    }
-  };
-
-  const sendStep = async (choice = null) => {
-    const id = sessionIdRef.current || sessionId;
+  const sendStep = useCallback(async (choice = null) => {
+    const id = sessionIdRef.current;
     if (!id) return;
 
     const res = await fetch("https://dt-assignment-fqfo.onrender.com/step", {
@@ -47,24 +31,44 @@ function App() {
     });
 
     const data = await res.json();
-    handleResponse(data.data);
-  };
+    handleResponseRef.current?.(data.data);
+  }, []);
 
-  const startSession = async () => {
-    const res = await fetch("https://dt-assignment-fqfo.onrender.com/start", {
-      method: "POST",
-    });
+  const handleResponse = useCallback((res) => {
+    if (!res) return;
 
-    const data = await res.json();
+    if (res.type === "message") {
+      addMessage("agent", res.text);
+      sendStep();
+    } else if (res.type === "question") {
+      addMessage("agent", res.text, res.options);
+    } else if (res.type === "summary") {
+      addMessage("agent", res.text);
+      sendStep();
+    } else if (res.type === "end") {
+      addMessage("agent", res.text);
+    }
+  }, [sendStep, addMessage]);
 
-    setSessionId(data.session_id);
-    sessionIdRef.current = data.session_id;
-    handleResponse(data.data);
-  };
+  useEffect(() => {
+    handleResponseRef.current = handleResponse;
+  }, [handleResponse]);
 
   useEffect(() => {
     if (hasStarted.current) return;
     hasStarted.current = true;
+
+    const startSession = async () => {
+      const res = await fetch("https://dt-assignment-fqfo.onrender.com/start", {
+        method: "POST",
+      });
+
+      const data = await res.json();
+
+      sessionIdRef.current = data.session_id;
+      handleResponseRef.current?.(data.data);
+    };
+
     startSession();
   }, []);
 
