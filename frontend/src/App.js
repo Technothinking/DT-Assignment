@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import ChatWindow from "./components/ChatWindow";
 import "./App.css";
 
@@ -8,23 +8,28 @@ function App() {
   const hasStarted = useRef(false);
   const sessionIdRef = useRef(null);
 
-  const startSession = useCallback(async () => {
-    const res = await fetch("https://dt-assignment-fqfo.onrender.com/start", {
-      method: "POST",
-    });
+  const addMessage = (sender, text, options = null) => {
+    setMessages((prev) => [
+      ...prev,
+      { sender, text, options }
+    ]);
+  };
 
-    const data = await res.json();
+  const handleResponse = (res) => {
+    if (!res) return;
 
-    setSessionId(data.session_id);
-    sessionIdRef.current = data.session_id;
-    handleResponse(data.data);
-  }, []);
-
-  useEffect(() => {
-    if (hasStarted.current) return;
-    hasStarted.current = true;
-    startSession();
-  }, [startSession]);
+    if (res.type === "message") {
+      addMessage("agent", res.text);
+      sendStep();
+    } else if (res.type === "question") {
+      addMessage("agent", res.text, res.options);
+    } else if (res.type === "summary") {
+      addMessage("agent", res.text);
+      sendStep();
+    } else if (res.type === "end") {
+      addMessage("agent", res.text);
+    }
+  };
 
   const sendStep = async (choice = null) => {
     const id = sessionIdRef.current || sessionId;
@@ -45,34 +50,23 @@ function App() {
     handleResponse(data.data);
   };
 
-  const handleResponse = (res) => {
-    if (!res) return;
+  const startSession = async () => {
+    const res = await fetch("https://dt-assignment-fqfo.onrender.com/start", {
+      method: "POST",
+    });
 
-    if (res.type === "message") {
-      addMessage("agent", res.text);
-      sendStep();
-    }
+    const data = await res.json();
 
-    else if (res.type === "question") {
-      addMessage("agent", res.text, res.options);
-    }
-
-    else if (res.type === "summary") {
-      addMessage("agent", res.text);
-      sendStep();
-    }
-
-    else if (res.type === "end") {
-      addMessage("agent", res.text);
-    }
+    setSessionId(data.session_id);
+    sessionIdRef.current = data.session_id;
+    handleResponse(data.data);
   };
 
-  const addMessage = (sender, text, options = null) => {
-    setMessages((prev) => [
-      ...prev,
-      { sender, text, options }
-    ]);
-  };
+  useEffect(() => {
+    if (hasStarted.current) return;
+    hasStarted.current = true;
+    startSession();
+  }, []);
 
   const handleOptionClick = (optionIndex, optionText) => {
     addMessage("user", optionText);
