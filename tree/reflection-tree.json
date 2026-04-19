@@ -1,0 +1,303 @@
+{
+  "nodes": [
+    {
+      "id": "START",
+      "type": "start",
+      "text": "Good evening. Let’s take a moment to reflect on your day.",
+      "next": "A1_Q1"
+    },
+    {
+      "id": "A1_Q1",
+      "type": "question",
+      "text": "How would you describe your day overall?",
+      "options": ["Productive", "Tough", "Mixed", "Frustrating"],
+      "nextMap": {
+        "Productive": "A1_Q2_POS",
+        "Mixed": "A1_Q2_POS",
+        "Tough": "A1_Q2_NEG",
+        "Frustrating": "A1_Q2_NEG"
+      }
+    },
+    {
+      "id": "A1_Q2_POS",
+      "type": "question",
+      "text": "When something went well today, what made it happen?",
+      "options": [
+        "I planned and executed it well",
+        "The team supported me",
+        "Things just worked out",
+        "I adapted when needed"
+      ],
+      "signalMap": {
+        "I planned and executed it well": "axis1:internal",
+        "The team supported me": "axis1:internal",
+        "Things just worked out": "axis1:external",
+        "I adapted when needed": "axis1:internal"
+      },
+      "next": "A1_REFLECT"
+    },
+    {
+      "id": "A1_Q2_NEG",
+      "type": "question",
+      "text": "When things didn’t go as planned, what was your first reaction?",
+      "options": [
+        "Tried to focus on what I could control",
+        "Waited for things to change",
+        "Felt stuck",
+        "Pushed through anyway"
+      ],
+      "signalMap": {
+        "Tried to focus on what I could control": "axis1:internal",
+        "Waited for things to change": "axis1:external",
+        "Felt stuck": "axis1:external",
+        "Pushed through anyway": "axis1:internal"
+      },
+      "next": "A1_REFLECT"
+    },
+    {
+      "id": "A1_REFLECT",
+      "type": "decision",
+      "conditions": [
+        {
+          "if": "axis1.internal >= axis1.external",
+          "goto": "A1_REFLECT_INT"
+        },
+        {
+          "if": "axis1.external > axis1.internal",
+          "goto": "A1_REFLECT_EXT"
+        }
+      ]
+    },
+    {
+      "id": "A1_REFLECT_INT",
+      "type": "reflection",
+      "text": "You noticed your role in shaping what happened today. Even small decisions count — that’s where change begins.",
+      "next": "A1_Q3"
+    },
+    {
+      "id": "A1_REFLECT_EXT",
+      "type": "reflection",
+      "text": "It’s natural to feel pulled by circumstances. But even in tough moments, there’s usually a small space where you chose how to respond.",
+      "next": "A1_Q3"
+    },
+    {
+      "id": "A1_Q3",
+      "type": "question",
+      "text": "Looking back, where did you have the most control today?",
+      "options": [
+        "How I approached problems",
+        "How I managed my time",
+        "I didn’t feel much control",
+        "How I responded emotionally"
+      ],
+      "signalMap": {
+        "How I approached problems": "axis1:internal",
+        "How I managed my time": "axis1:internal",
+        "I didn’t feel much control": "axis1:external",
+        "How I responded emotionally": "axis1:internal"
+      },
+      "next": "A1_FINAL"
+    },
+    {
+      "id": "A1_FINAL",
+      "type": "reflection",
+      "text": "Today wasn’t just something that happened to you. You influenced parts of it — through actions, decisions, or responses.",
+      "next": "BRIDGE_1_2"
+    },
+    {
+      "id": "BRIDGE_1_2",
+      "type": "bridge",
+      "text": "Now let’s shift perspective — from what you controlled, to what you contributed.",
+      "next": "A2_Q1"
+    },
+    {
+      "id": "A2_Q1",
+      "type": "question",
+      "text": "Think about one interaction you had today. What stands out most?",
+      "options": [
+        "I helped someone with something",
+        "I shared knowledge or guidance",
+        "I needed support from others",
+        "I felt others weren’t doing enough"
+      ],
+      "signalMap": {
+        "I helped someone with something": "axis2:contribution",
+        "I shared knowledge or guidance": "axis2:contribution",
+        "I needed support from others": "axis2:contribution",
+        "I felt others weren’t doing enough": "axis2:entitlement"
+      },
+      "next": "A2_Q2"
+    },
+    {
+      "id": "A2_Q2",
+      "type": "question",
+      "text": "In that situation, how did you show up?",
+      "options": [
+        "I focused on solving the problem",
+        "I made sure others were aligned",
+        "I expected others to step up",
+        "I felt I was doing more than my share"
+      ],
+      "signalMap": {
+        "I focused on solving the problem": "axis2:contribution",
+        "I made sure others were aligned": "axis2:contribution",
+        "I expected others to step up": "axis2:entitlement",
+        "I felt I was doing more than my share": "axis2:entitlement"
+      },
+      "next": "A2_DECIDE"
+    },
+    {
+      "id": "A2_DECIDE",
+      "type": "decision",
+      "conditions": [
+        {
+          "if": "axis2.contribution >= axis2.entitlement",
+          "goto": "A2_REFLECT_CONTRIB"
+        },
+        {
+          "if": "axis2.entitlement > axis2.contribution",
+          "goto": "A2_REFLECT_ENTITLE"
+        }
+      ]
+    },
+    {
+      "id": "A2_REFLECT_CONTRIB",
+      "type": "reflection",
+      "text": "You leaned toward contribution today — focusing on what you could add, not just what you received.",
+      "next": "A2_Q3"
+    },
+    {
+      "id": "A2_REFLECT_ENTITLE",
+      "type": "reflection",
+      "text": "It’s easy to notice gaps in others’ effort. But focusing only there can hide where you still had room to contribute.",
+      "next": "A2_Q3"
+    },
+    {
+      "id": "A2_Q3",
+      "type": "question",
+      "text": "Looking back, where could you have contributed just a little more?",
+      "options": [
+        "Offering help earlier",
+        "Communicating more clearly",
+        "Taking ownership of a gap",
+        "I already gave my best"
+      ],
+      "signalMap": {
+        "Offering help earlier": "axis2:contribution",
+        "Communicating more clearly": "axis2:contribution",
+        "Taking ownership of a gap": "axis2:contribution",
+        "I already gave my best": "axis2:entitlement"
+      },
+      "next": "A2_FINAL"
+    },
+    {
+      "id": "A2_FINAL",
+      "type": "reflection",
+      "text": "Contribution isn’t about doing everything. It’s about noticing where you can move things forward — even in small ways.",
+      "next": "BRIDGE_2_3"
+    },
+    {
+      "id": "BRIDGE_2_3",
+      "type": "bridge",
+      "text": "Now let’s widen the lens — beyond what you did, to who it impacted.",
+      "next": "A3_Q1"
+    },
+    {
+      "id": "A3_Q1",
+      "type": "question",
+      "text": "When you think about today’s biggest challenge, who comes to mind first?",
+      "options": [
+        "Just me — I was dealing with it myself",
+        "My team — we were all involved",
+        "A specific colleague",
+        "The customer or end user"
+      ],
+      "signalMap": {
+        "Just me — I was dealing with it myself": "axis3:self",
+        "My team — we were all involved": "axis3:others",
+        "A specific colleague": "axis3:others",
+        "The customer or end user": "axis3:others"
+      },
+      "next": "A3_Q2"
+    },
+    {
+      "id": "A3_Q2",
+      "type": "question",
+      "text": "How did that situation affect others?",
+      "options": [
+        "It didn’t really affect others",
+        "It created some friction for the team",
+        "It impacted someone else’s work",
+        "It affected the final outcome or user"
+      ],
+      "signalMap": {
+        "It didn’t really affect others": "axis3:self",
+        "It created some friction for the team": "axis3:others",
+        "It impacted someone else’s work": "axis3:others",
+        "It affected the final outcome or user": "axis3:others"
+      },
+      "next": "A3_DECIDE"
+    },
+    {
+      "id": "A3_DECIDE",
+      "type": "decision",
+      "conditions": [
+        {
+          "if": "axis3.others >= axis3.self",
+          "goto": "A3_REFLECT_WIDE"
+        },
+        {
+          "if": "axis3.self > axis3.others",
+          "goto": "A3_REFLECT_NARROW"
+        }
+      ]
+    },
+    {
+      "id": "A3_REFLECT_WIDE",
+      "type": "reflection",
+      "text": "You saw how your work connects to others — team, colleagues, even users. That awareness turns effort into impact.",
+      "next": "A3_Q3"
+    },
+    {
+      "id": "A3_REFLECT_NARROW",
+      "type": "reflection",
+      "text": "It’s natural to experience the day through your own lens. But every action sits inside a larger system — even when it doesn’t feel that way.",
+      "next": "A3_Q3"
+    },
+    {
+      "id": "A3_Q3",
+      "type": "question",
+      "text": "If you looked at today from someone else’s perspective, what might stand out?",
+      "options": [
+        "They wouldn’t notice much",
+        "They’d see the effort I put in",
+        "They might have been affected more than I realized",
+        "They depended on what I did"
+      ],
+      "signalMap": {
+        "They wouldn’t notice much": "axis3:self",
+        "They’d see the effort I put in": "axis3:others",
+        "They might have been affected more than I realized": "axis3:others",
+        "They depended on what I did": "axis3:others"
+      },
+      "next": "A3_FINAL"
+    },
+    {
+      "id": "A3_FINAL",
+      "type": "reflection",
+      "text": "Work rarely exists in isolation. What you do shapes others — teammates, outcomes, and experiences beyond your immediate view.",
+      "next": "SUMMARY"
+    },
+    {
+      "id": "SUMMARY",
+      "type": "summary",
+      "text": "Today, you leaned {axis1.dominant} in how you handled situations, {axis2.dominant} in how you showed up, and your perspective was more {axis3.dominant}.",
+      "next": "END"
+    },
+    {
+      "id": "END",
+      "type": "end",
+      "text": "That’s it for today. See you tomorrow."
+    }
+  ]
+}
