@@ -1,5 +1,10 @@
 # Deterministic Reflection Agent (No LLM at Runtime)
 
+## Live Demo
+https://dt-assignment-v46w.vercel.app/
+
+Note:The backend is hosted on Render and may take ~15-30 seconds to start due to cold starts.
+
 ## Overview
 
 This project implements a **deterministic end-of-day reflection tool** that guides users through a structured conversation across three psychological axes:
