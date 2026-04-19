@@ -9,7 +9,7 @@ function App() {
   const sessionIdRef = useRef(null);
 
   const startSession = useCallback(async () => {
-    const res = await fetch("http://127.0.0.1:8000/start", {
+    const res = await fetch("https://dt-assignment-fqfo.onrender.com/start", {
       method: "POST",
     });
 
@@ -30,7 +30,7 @@ function App() {
     const id = sessionIdRef.current || sessionId;
     if (!id) return;
 
-    const res = await fetch("http://127.0.0.1:8000/step", {
+    const res = await fetch("https://dt-assignment-fqfo.onrender.com/step", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
